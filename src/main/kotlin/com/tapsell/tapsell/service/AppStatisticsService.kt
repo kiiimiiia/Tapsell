@@ -1,11 +1,11 @@
 package com.tapsell.tapsell.service
-import com.github.eloyzone.jalalicalendar.JalaliDate
+import com.tapsell.tapsell.models.AppStatistics
 import com.tapsell.tapsell.repository.AppStatisticsRepository
 import com.tapsell.tapsell.responses.GetStatItem
-import com.tapsell.tapsell.responses.GetStatResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-
+val months =  listOf("01", "02" , "03" , "04", "05", "06" , "07" , "08" , "09" , "10" , "11" , "12")
+val days   = listOf("01", "02" , "03" , "04", "05", "06" , "07" , "08" , "09" , "10" , "11" , "12" , "13" , "14" , "15" , "16","17" , "18" , "19" , "20", "21" , "22" , "23" , "24" , "25" , "26" , "27" , "28" , "29")
 @Service
 class AppStatisticsService {
 
@@ -13,6 +13,7 @@ class AppStatisticsService {
     private lateinit var appStatisticsRepository: AppStatisticsRepository
 
     fun getByDate(startDate: String, endDate: String, type: Int): List<GetStatItem> {
+        generateData()
         var startDateSplited = startDate.split('-')
         var endDateSplited = endDate.split('-')
         val appStatisticsFromDb = appStatisticsRepository.findByReportTimeBetweenAndType((startDateSplited[0] + startDateSplited[1] + startDateSplited[2]).toInt(),
@@ -49,6 +50,19 @@ class AppStatisticsService {
             daysOfMonths = (month - 1) * 31
 
         return daysOfMonths
+    }
+
+    fun generateData(){
+
+		if(appStatisticsRepository.count() <1000)
+		    appStatisticsRepository.deleteAll()
+
+		for(i in 1..1000) {
+            appStatisticsRepository.insert(AppStatistics(reportTime = ((1395..1398).random().toString()+ months.get((0..11).random())+ days.get((0..28).random())).toInt(), type = (1..5).random(), videoRequests = (1..500).random(), webViewRequests = (1..5000).random(),
+					videoClicks = (1..500).random(), webViewClicks = (1..500).random(), videoInstalls = (1..500).random(), webviewInstalls = (1..500).random()))
+		}
+
+
     }
 
 
