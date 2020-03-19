@@ -1,9 +1,8 @@
-package com.tapsell.tapsell.Controller
+package com.tapsell.tapsell.controller
 
 import com.github.eloyzone.jalalicalendar.JalaliDate
-import com.tapsell.tapsell.Models.AppStatistics
-import com.tapsell.tapsell.Responses.GetStatResponse
-import com.tapsell.tapsell.Service.AppStatisticsService
+import com.tapsell.tapsell.responses.GetStatResponse
+import com.tapsell.tapsell.service.AppStatisticsService
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.cache.annotation.Cacheable
 import org.springframework.stereotype.Controller
@@ -11,7 +10,7 @@ import org.springframework.web.bind.annotation.*
 
 @Controller
 @RequestMapping("api/AppStatistics")
-class mainController() {
+class Controller() {
     @Autowired
     private lateinit var appStatisticsService: AppStatisticsService
 
@@ -20,11 +19,7 @@ class mainController() {
     @ResponseBody
     fun getStats( @RequestParam startDate : String, @RequestParam endDate : String , @RequestParam type :Int): GetStatResponse
     {
-        var startDateSplited = startDate.split('-')
-        var endDateSpliterator = endDate.split('-')
-        return appStatisticsService.getByDate(JalaliDate(startDateSplited[0].toInt() , startDateSplited[1].toInt() , startDateSplited[2].toInt()) ,
-                                              JalaliDate(endDateSpliterator[0].toInt() , endDateSpliterator[1].toInt() , endDateSpliterator[2].toInt()) ,
-                                              type)
+        return GetStatResponse(appStatisticsService.getByDate( startDate, endDate, type))
     }
 
 }

@@ -1,17 +1,13 @@
-package com.tapsell.tapsell.Models
+package com.tapsell.tapsell.models
 
 import com.github.eloyzone.jalalicalendar.JalaliDate
 import org.springframework.data.annotation.Id
-import org.springframework.data.mongodb.core.index.IndexDirection
-import org.springframework.data.mongodb.core.index.Indexed
 import org.springframework.data.mongodb.core.mapping.Document
-import java.time.LocalDate
-import javax.annotation.processing.Generated
 
 
 @Document(collection = "AppStatistics")
 data class AppStatistics(@Id  private   val id: String? = null,
-                          val reportTime: JalaliDate,
+                          val reportTime: Int,
                           val type: Int,
                           val videoRequests: Int,
                           val webViewRequests: Int,
